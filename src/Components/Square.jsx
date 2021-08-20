@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const Square = ({rowIndex, squareIndex, square, gotASquare}) => {
+const Square = ({ rowIndex, squareIndex, square, gotASquare }) => {
   return (
-    <div>
-      <p onClick={() => gotASquare(rowIndex, squareIndex)}>{square.value}</p>
-    </div>
-  )
-}
+    <button className="square" style={{backgroundColor: square.boolean ? "red" : null}} onClick={() => gotASquare(rowIndex, squareIndex)}>
+      {square.value}
+    </button>
+  );
+};
 
-export default Square
+export default Square;
