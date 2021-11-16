@@ -4,99 +4,69 @@ import boardData from "./boardData";
 
 const Board = () => {
   const [board, setBoard] = useState(boardData);
-  const [rowState, setRowState] = useState(null);
-  const [columnState, setColumnState] = useState(null);
-  const [squares, setSquares] = useState(0);
+  const [coordinates, setCoordinates] = useState({ row: null, column: null });
   const [bingo, setBingo] = useState(false);
 
   const gotASquare = (rowIndex, squareIndex) => {
     setBoard((prevState) => {
-      return prevState.map((row, stateRowIndex) => {
-        if (rowIndex === stateRowIndex) {
-          return row.map((square, stateSquareIndex) => {
-            if (squareIndex === stateSquareIndex) {
-              return { ...square, boolean: true };
-            } else {
-              return square;
-            }
-          });
-        } else {
-          return row;
-        }
-      });
+      let stateCopy = [...prevState];
+      stateCopy[rowIndex][squareIndex].boolean = true;
+      return [...stateCopy];
     });
-    setRowState(rowIndex);
-    setColumnState(squareIndex);
+    setCoordinates({ row: rowIndex, column: squareIndex });
   };
 
   useEffect(() => {
-    checkRow(rowState);
-    // squares < board[0].length ? checkColumn(columnState) : setBingo(true);
-  }, [board]);
+    if (coordinates.row || coordinates.column) {
 
-  useEffect(() => {
-    if (squares === 5) {
-      setBingo(true);
-      console.log("bingo!")
-    }
-    // squares < board[0].length ? checkColumn(columnState) : setBingo(true);
-  }, [squares]);
-
-  useEffect(() => {
-    if (rowState) {
-      if (squares < board[0].length) {
-        console.log("hello")
-        setSquares(0);
-        checkColumn(columnState);
+      if(checkRow(coordinates.row) || checkColumn(coordinates.column) || diagonalLtoR() ||diagonalRtoL())
+      {
+        setBingo(true)
       }
-      // if (squares < board[0].length) checkDiagonal();
     }
-  }, [rowState]);
+  }, [coordinates]); //eslint-disable-line react-hooks/exhaustive-deps 
+
 
   const checkRow = (rowIndex) => {
-    board
-      .filter((_, index) => index === rowIndex)
-      .forEach((row) => {
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].boolean) {
-            setSquares(squares + 1);
-          }
-        }
-      });
+    let tallie = 0;
+    board[rowIndex].forEach((square) => {
+      if (square.boolean) tallie += 1;
+    });
+    return tallie === 5;
   };
 
-  const checkColumn = (columnIndex) => {
+  const checkColumn = (columnIndex) => {    
     let columnArray = board.map((row, index) => {
       return row[columnIndex];
     });
-    for (let i = 0; i < columnArray.length; i++) {
-      if (columnArray[i].boolean) {
-        setSquares(squares + 1);
-      }
-    }
+    let tallie = 0;
+    columnArray.forEach((square) => {
+      if (square.boolean) tallie += 1;
+    });
+    return tallie === 5;
   };
 
   const diagonalLtoR = () => {
     // This row currently console.logs a diagonal pattern (1, 7, 13, 19, 25).
+    let tallie = 0;
     board.forEach((row, index) => {
-      if (row[index].boolean) {
-        setSquares(squares + 1);
-      }
+      if (row[index].boolean) tallie += 1
     });
+    return tallie === 5;
   };
 
   const diagonalRtoL = () => {
     // To check the diagonal pattern of the other direction
+    let tallie = 0;
     board.forEach((row, index) => {
-      if (row[row.length - index - 1].boolean) {
-        setSquares(squares + 1);
-      }
+      if (row[row.length - index - 1].boolean) tallie += 1
     });
+    return tallie === 5;
   };
 
   return (
-    <div style={{textAlign: 'center'}}>
-      <h1>{bingo ? 'BINGO' : 'No Bingo'}</h1>
+    <div style={{ textAlign: "center" }}>
+      <h1>{bingo ? "BINGO" : "No Bingo"}</h1>
       <div className="game-board">
         {board.map((row, rowIndex) => {
           return (
