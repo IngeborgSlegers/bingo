@@ -7,7 +7,7 @@ const Square = ({ rowIndex, squareIndex, square, gotASquare }) => {
       style={{ backgroundColor: square.boolean ? "red" : null }}
       onClick={() => gotASquare(rowIndex, squareIndex)}
     >
-      {square.value}
+      {square.squareValue}
     </button>
   );
 };

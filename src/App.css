@@ -4,8 +4,14 @@
 
 .game {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: center;
+}
+
+.form {
+  display:flex;
 }
 
 .square {
@@ -30,6 +36,7 @@
 }
 
 .game-board {
-  width: 50%;
-  margin: 1em auto
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

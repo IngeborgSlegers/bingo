@@ -2,19 +2,10 @@ import React, { useState, useEffect } from "react";
 import Square from "./Square";
 import boardData from "./boardData";
 
-const Board = () => {
-  const [board, setBoard] = useState(boardData);
-  const [coordinates, setCoordinates] = useState({ row: null, column: null });
+const Board = ({board, coordinates, gotASquare}) => {
+  // const [board, setBoard] = useState(themeBoard);
+  // const [coordinates, setCoordinates] = useState({ row: null, column: null });
   const [bingo, setBingo] = useState(false);
-
-  const gotASquare = (rowIndex, squareIndex) => {
-    setBoard((prevState) => {
-      let stateCopy = [...prevState];
-      stateCopy[rowIndex][squareIndex].boolean = true;
-      return [...stateCopy];
-    });
-    setCoordinates({ row: rowIndex, column: squareIndex });
-  };
 
   useEffect(() => {
     if (coordinates.row || coordinates.column) {
